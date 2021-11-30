@@ -1,0 +1,27 @@
+{
+  "name": "advent-of-code-2021",
+  "version": "1.0.0",
+  "description": "Solutions to Advent of Code 2021 challenges.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch"
+  },
+  "keywords": [
+    "challenges",
+    "advent-of-code",
+    "advent",
+    "javascript",
+    "js"
+  ],
+  "author": "Dejan \"Mesko\" Mesar",
+  "license": "See license in LICENSE.md",
+  "devDependencies": {
+    "jest": "^27.4.1"
+  },
+  "jest": {
+    "transform": {}
+  }
+}
