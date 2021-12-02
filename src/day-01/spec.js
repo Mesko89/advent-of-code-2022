@@ -1,6 +1,6 @@
 import { part1, part2 } from './index';
 
-describe('day-01', () => {
+describe('Day 1: Sonar Sweep', () => {
   describe('part1', () => {
     it('should work for simple case', () => {
       expect(
