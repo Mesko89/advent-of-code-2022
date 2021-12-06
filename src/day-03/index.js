@@ -63,6 +63,5 @@ export function part2(input) {
   const counts = countBits(input);
   const oxygenRating = getOxygenRating(input, counts);
   const co2Rating = getCo2Rating(input, counts);
-  console.log(oxygenRating, co2Rating);
   return oxygenRating * co2Rating;
 }
