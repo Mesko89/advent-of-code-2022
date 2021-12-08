@@ -32,10 +32,10 @@ function countSimpleDigits(numbers) {
 // 4 (4) -> 4
 // 7 (3) -> 7
 // 8 (7) -> 8
-// 6 (6) -> has 8, but not whole 1
-// 0 (6) -> has 8, but not whole 4
+// 6 (6) -> has not whole 1
+// 0 (6) -> has not whole 4
 // 9 (6) -> what is left of size 6
-// 2 (5) -> has 8, and exactly 2 missing from 4
+// 2 (5) -> has exactly 2 missing from 4
 // 3 (5) -> missing 1 from 2
 // 5 (5) -> what is left
 
@@ -45,10 +45,6 @@ function isIncludedIn(set1, set2) {
 
 function missingCount(set1, set2) {
   return Array.from(set1.values()).filter((v) => !set2.has(v)).length;
-}
-
-function isEqual(set1, set2) {
-  return set1.size === set2.size && isIncludedIn(set1, set2);
 }
 
 function resolveDigits(reading) {
@@ -62,14 +58,14 @@ function resolveDigits(reading) {
       resolve: (reading, resolvedMap) =>
         reading
           .filter((s) => s.size === 6)
-          .find((s) => !isIncludedIn(resolvedMap.get(1).set, s)),
+          .find((s) => !isIncludedIn(resolvedMap.get(1), s)),
     },
     {
       digit: 0,
       resolve: (reading, resolvedMap) =>
         reading
           .filter((s) => s.size === 6)
-          .find((s) => !isIncludedIn(resolvedMap.get(4).set, s)),
+          .find((s) => !isIncludedIn(resolvedMap.get(4), s)),
     },
     {
       digit: 9,
@@ -80,14 +76,14 @@ function resolveDigits(reading) {
       resolve: (reading, resolvedMap) =>
         reading
           .filter((s) => s.size === 5)
-          .find((s) => missingCount(resolvedMap.get(4).set, s) === 2),
+          .find((s) => missingCount(resolvedMap.get(4), s) === 2),
     },
     {
       digit: 3,
       resolve: (reading, resolvedMap) =>
         reading
           .filter((s) => s.size === 5)
-          .find((s) => missingCount(resolvedMap.get(2).set, s) === 1),
+          .find((s) => missingCount(resolvedMap.get(2), s) === 1),
     },
     {
       digit: 5,
@@ -98,10 +94,7 @@ function resolveDigits(reading) {
   for (let solver of digitSolvers) {
     const resolvedSet = solver.resolve(reading, resolvedDigits);
     reading = reading.filter((v) => v !== resolvedSet);
-    resolvedDigits.set(solver.digit, {
-      set: resolvedSet,
-      string: Array.from(resolvedSet.values()).sort().join(''),
-    });
+    resolvedDigits.set(solver.digit, resolvedSet);
   }
   return resolvedDigits;
 }
@@ -109,8 +102,8 @@ function resolveDigits(reading) {
 function resolveNumber(reading, resolvedDigits) {
   let number = '';
   const readingToDigitMap = Array.from(resolvedDigits.entries()).reduce(
-    (map, [digit, { string }]) => {
-      map.set(string, digit);
+    (map, [digit, set]) => {
+      map.set(Array.from(set).sort().join(''), digit);
       return map;
     },
     new Map()
