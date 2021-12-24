@@ -1,3 +1,3 @@
 export function manhattanDistance(p1, p2) {
-  return Math.abs(p2.x - p1.x) + Math.abs(p2.y - p1.y);
+  return p1.reduce((total, _, i) => total + Math.abs(p2[i] - p1[i]), 0);
 }
