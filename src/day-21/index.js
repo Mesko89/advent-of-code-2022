@@ -58,34 +58,54 @@ const diracRolls = diracDiceRolls.reduce((rolls, diceRolls) => {
   return rolls;
 }, []);
 
-function playDiracDiceGame(players) {
-  const games = [{ players, currentPlayer: 0, count: 1 }];
-  let playersWin = players.map(() => 0);
-  while (games.length) {
-    const game = games.pop();
-    if (game.players.some((p) => p.score >= 21)) {
-      if (game.players[0].score >= 21) {
-        playersWin[0] += game.count;
-      } else {
-        playersWin[1] += game.count;
-      }
+const memoScore = new Map();
+function playDiracDiceGame(
+  currentPlayer,
+  p1Position,
+  p1Score,
+  p2Position,
+  p2Score
+) {
+  if (p1Score >= 21) return [1, 0];
+  if (p2Score >= 21) return [0, 1];
+  const memoKey = [
+    currentPlayer,
+    p1Position,
+    p1Score,
+    p2Position,
+    p2Score,
+  ].join(',');
+  if (memoScore.has(memoKey)) {
+    return memoScore.get(memoKey);
+  }
+  const totalWins = [0, 0];
+  for (const roll of diracRolls) {
+    if (currentPlayer === 0) {
+      const newPosition = ((p1Position - 1 + roll.points) % 10) + 1;
+      const wins = playDiracDiceGame(
+        1,
+        newPosition,
+        p1Score + newPosition,
+        p2Position,
+        p2Score
+      );
+      totalWins[0] += wins[0] * roll.count;
+      totalWins[1] += wins[1] * roll.count;
     } else {
-      for (const roll of diracRolls) {
-        const players = game.players.map((p) => ({ ...p }));
-        players[game.currentPlayer].position =
-          ((players[game.currentPlayer].position + roll.points - 1) % 10) + 1;
-        players[game.currentPlayer].score +=
-          players[game.currentPlayer].position;
-        const newGame = {
-          players,
-          currentPlayer: (game.currentPlayer + 1) % players.length,
-          count: game.count * roll.count,
-        };
-        games.push(newGame);
-      }
+      const newPosition = ((p2Position - 1 + roll.points) % 10) + 1;
+      const wins = playDiracDiceGame(
+        0,
+        p1Position,
+        p1Score,
+        newPosition,
+        p2Score + newPosition
+      );
+      totalWins[0] += wins[0] * roll.count;
+      totalWins[1] += wins[1] * roll.count;
     }
   }
-  return playersWin;
+  memoScore.set(memoKey, totalWins);
+  return totalWins;
 }
 
 export function part1(input) {
@@ -97,6 +117,12 @@ export function part1(input) {
 
 export function part2(input) {
   let players = parsePlayers(input);
-  const playersWins = playDiracDiceGame(players);
+  const playersWins = playDiracDiceGame(
+    0,
+    players[0].position,
+    players[0].score,
+    players[1].position,
+    players[1].score
+  );
   return Math.max(...playersWins);
 }
