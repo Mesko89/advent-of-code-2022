@@ -1,4 +1,4 @@
-import { part1, part2 } from './index';
+import { part1 } from './index';
 
 const testInput = [
   'on x=-20..26,y=-36..17,z=-47..7',
