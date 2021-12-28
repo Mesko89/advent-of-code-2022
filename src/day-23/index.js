@@ -143,6 +143,20 @@ function getCost(stateA, stateB) {
   return (path.length - 1) * AMPHIPOD_COSTS[stateA.get(posA)];
 }
 
+function getHeuristic(state, endPositions) {
+  let score = 0;
+  for (const [amphipod, positions] of Object.entries(endPositions)) {
+    for (const position of positions) {
+      if (state.get(position) === amphipod) {
+        score -= AMPHIPOD_COSTS[amphipod];
+      } else {
+        score += AMPHIPOD_COSTS[amphipod];
+      }
+    }
+  }
+  return score;
+}
+
 export function part1(input) {
   const endPositions = {
     A: ['3,3', '3,2'],
@@ -156,7 +170,7 @@ export function part1(input) {
     isEnd: (state) => isEndPosition(state, endPositions),
     neighbor: (state) => getPossibleStates(state, endPositions),
     distance: getCost,
-    heuristic: () => 1,
+    heuristic: (state) => getHeuristic(state, endPositions),
     hash: (state) => hash(state),
   });
   return result.cost;
