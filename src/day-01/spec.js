@@ -1,40 +1,48 @@
 import { part1, part2 } from './index';
 
-describe('Day 1: Sonar Sweep', () => {
+describe('Day 1: Calorie Counting', () => {
   describe('part1', () => {
-    it('should work for simple case', () => {
+    it('should return most calories', () => {
       expect(
         part1([
-          '199',
-          '200',
-          '208',
-          '210',
-          '200',
-          '207',
-          '240',
-          '269',
-          '260',
-          '263',
+          '1000',
+          '2000',
+          '3000',
+          '',
+          '4000',
+          '',
+          '5000',
+          '6000',
+          '',
+          '7000',
+          '8000',
+          '9000',
+          '',
+          '10000',
         ])
-      ).toBe(7);
+      ).toBe(24000);
     });
   });
   describe('part2', () => {
-    it('should work for simple case', () => {
+    it('should get total of three biggest calories', () => {
       expect(
         part2([
-          '199',
-          '200',
-          '208',
-          '210',
-          '200',
-          '207',
-          '240',
-          '269',
-          '260',
-          '263',
+          '1000',
+          '2000',
+          '3000',
+          '',
+          '4000',
+          '',
+          '5000',
+          '6000',
+          '',
+          '7000',
+          '8000',
+          '9000',
+          '',
+          '10000',
         ])
-      ).toBe(5);
+      ).toBe(45000);
     });
   });
 });
