@@ -27,7 +27,6 @@ function runInstructions(instructions) {
       cycle++;
     }
   }
-  console.log(xHistory);
   return xHistory;
 }
 
