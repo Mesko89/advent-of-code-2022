@@ -42,8 +42,8 @@ export function part1(input) {
     start,
     isEnd: (pos) => get(pos.x, pos.y) === 'E',
     hash: ({ x, y }) => `${x},${y}`,
-    distance: (posA, posB) => 1,
-    heuristic: (pos) => Math.abs(pos.x - end.x) + Math.abs(pos.y - end.y),
+    distance: () => 1,
+    heuristic: () => 1,
     timeout: 30000,
     neighbor: (pos) => {
       const nodes = possibleNeighbors(pos).filter((p) => {
@@ -65,8 +65,8 @@ export function part2(input) {
     start: end,
     isEnd: (pos) => get(pos.x, pos.y) === 'a',
     hash: ({ x, y }) => `${x},${y}`,
-    distance: (posA, posB) => 1,
-    heuristic: (pos) => 1,
+    distance: () => 1,
+    heuristic: () => 1,
     timeout: 30000,
     neighbor: (pos) => {
       const nodes = possibleNeighbors(pos).filter((p) => {
