@@ -1,6 +1,6 @@
 import { part1, part2 } from './index';
 
-describe('Day 19: Not Enough Minerals', () => {
+describe('Day 20: Grove Positioning System', () => {
   describe('part1', () => {
     it('should solve part 1', () => {
       expect(part1(['1', '2', '-3', '3', '-2', '0', '4'])).toBe(3);
